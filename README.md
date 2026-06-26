@@ -1,4 +1,5 @@
 # DevSecOps Pipeline: Análisis Estático y Linters Avanzados en Python
+![DevSecOps Pipeline](https://github.com/nightwolf2908/devsecops-pipeline-python/actions/workflows/ci-cd.yml/badge.svg)
 
 Este proyecto implementa un flujo de trabajo automatizado de Integración Continua (CI) enfocado en la calidad de código, tipado estricto y seguridad estática (SAST). El objetivo es actuar como un revisor implacable ("Gatekeeper") antes de permitir cualquier integración o despliegue.
 
@@ -30,11 +31,14 @@ El pipeline interceptó y bloqueó con éxito los siguientes fallos:
 Si deseas replicar o probar las herramientas de manera local:
 
 1.Clonar el repositorio.
+
 2.Crear e iniciar el entorno virtual:
     python -m venv venv
     source venv/bin/activate 
+
 3.Instalar dependencias de desarrollo:
     pip install -r requirements.txt
+    
 4.Ejecutar inspeccion manualmente:
     python -m ruff check src/
     python -m mypy src/
