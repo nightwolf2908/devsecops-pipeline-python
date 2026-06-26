@@ -1,20 +1,21 @@
+from typing import Any
 import requests
 
 
-# Error 1 (Mypy): Eliminamos por completo el tipado estricto en los argumentos y el retorno
-def fetch_user_data(user_id):
-    url = f"https://jsonplaceholder.typicode.com/users/{user_id}"
-
-    # Error 2 (Bandit): Dejamos un Token de acceso secreto expuesto directamente en el código (Hardcoded Secret)
-    API_TOKEN = "ghp_AnUnSaFeToKeNhErE000000000000000000"
-
+def fetch_user_data(user_id: int) -> dict[str, Any]:
+    """Simula la obtención de datos de un usuario desde una API externa."""
+    url: str = f"https://jsonplaceholder.typicode.com/users/{user_id}"
     response = requests.get(url, timeout=5)
-    return response.json()
+
+    if response.status_code == 200:
+        data: dict[str, Any] = response.json()
+        return data
+    return {}
 
 
 if __name__ == "__main__":
-    # Error 3 (Ruff): Declaramos una variable basura que no se usa y dejamos demasiados espacios verticales vacíos
-    variable_basura = "no hago nada en el codigo"
-
     user_info = fetch_user_data(1)
-    print(user_info)
+    if user_info:
+        print(f"Usuario encontrado: {user_info.get('name')}")
+    else:
+        print("No se pudo obtener la información del usuario.")
