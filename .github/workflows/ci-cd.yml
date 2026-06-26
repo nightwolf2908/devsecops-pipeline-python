@@ -43,8 +43,10 @@ jobs:
 
     # 6. PASO DEV: Verificar tipado estático (Mypy)
     - name: Verificar Tipado Estático (Mypy)
+      if: always()
       run: python -m mypy src/
 
     # 7. PASO SEC: Escaneo de Seguridad Estático (Bandit)
     - name: Escaneo de Seguridad (Bandit)
+      if: always()
       run: python -m bandit -r src/
