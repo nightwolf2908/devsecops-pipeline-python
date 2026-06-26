@@ -1,0 +1,10 @@
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+
+[tool.mypy]
+disallow_untyped_defs = true
+warn_unused_ignores = true
+strict = true

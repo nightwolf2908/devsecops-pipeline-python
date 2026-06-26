@@ -1,0 +1,50 @@
+name: DevSecOps Pipeline
+
+# El pipeline se ejecutará en cada Push o Pull Request a la rama main
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  lint-and-security:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Clonar el repositorio en el servidor de GitHub
+    - name: Descargar código del repositorio
+      uses: actions/checkout@v4
+
+    # 2. Configurar el entorno de Python
+    - name: Configurar Python 3.11
+      uses: actions/actions-setup-python@v5
+      with:
+        python-version: "3.11"
+
+    # 3. Cachear dependencias para que el pipeline corra más rápido en el futuro
+    - name: Cachear dependencias de Pip
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    # 4. Instalar las dependencias de nuestro proyecto y herramientas
+    - name: Instalar dependencias
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    # 5. PASO DEV: Ejecutar el Linter y formateador (Ruff)
+    - name: Ejecutar Linter (Ruff)
+      run: python -m ruff check src/
+
+    # 6. PASO DEV: Verificar tipado estático (Mypy)
+    - name: Verificar Tipado Estático (Mypy)
+      run: python -m mypy src/
+
+    # 7. PASO SEC: Escaneo de Seguridad Estático (Bandit)
+    - name: Escaneo de Seguridad (Bandit)
+      run: python -m bandit -r src/
